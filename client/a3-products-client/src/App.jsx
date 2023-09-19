@@ -4,13 +4,13 @@ import viteLogo from '/vite.svg'
 import './App.css'
 import { auth } from './firebase'
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
-import {AuthProvider, useAuth} from "./AuthContext.jsx";
+import {useAuth} from "./AuthContext.jsx";
 
 function App() {
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    const [ currentUser, setCurrentUser ] = useAuth();
+    const { currentUser, logout, login } = useAuth()
 
     const handleEmailChange = (e) => {
         e.preventDefault()
@@ -38,15 +38,7 @@ function App() {
 
     const handleLoginSubmit = async (e) => {
         e.preventDefault();
-        await signInWithEmailAndPassword(auth, email, password)
-            .then((userCredential) => {
-                console.log(userCredential);
-            }
-        ).catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            console.log(errorCode, errorMessage)
-        });
+        login(email, password)
     }
 
     return (
@@ -59,7 +51,7 @@ function App() {
                     <img src={reactLogo} className="logo react" alt="React logo"/>
                 </a>
             </div>
-            <h1>{currentUser.display_name}</h1>
+            <h1>{currentUser?.email }</h1>
             <form className="card" onSubmit={handleLoginSubmit}>
                 <input type={"email"} value={email} onChange={handleEmailChange} />
                 <input type={"password"} value={password} onChange={handlePasswordChange} />
@@ -70,6 +62,7 @@ function App() {
                 <input type={"password"} value={password} onChange={handlePasswordChange} />
                 <button type={"submit"}>Register</button>
             </form>
+            <button onClick={logout}>Logout</button>
         </>
     )
 }
