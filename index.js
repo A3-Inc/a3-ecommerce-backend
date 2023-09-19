@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
-const middleware = require('./middleware/auth');
+const authenticate = require('./middleware/auth');
 const { MONGODB_URI, PORT } = require('./config');
 
 
@@ -11,7 +11,6 @@ const port = PORT;
 
 
 app.use(cors());
-app.use(middleware.decodeToken)
 
 mongoose.connect(MONGODB_URI)
     .then((res) => {
@@ -24,6 +23,11 @@ mongoose.connect(MONGODB_URI)
 app.get('/', (req, res) => {
     res.send('Express + TypeScript Server');
 });
+
+app.get('/api', authenticate, (req, res) => {
+    res.send('Express + TypeScript Server Secured');
+});
+
 
 app.listen(port, () => {
     console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
