@@ -10,7 +10,7 @@ function App() {
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    const { currentUser, logout, login } = useAuth()
+    const { currentUser, logout, login, register } = useAuth()
 
     const handleEmailChange = (e) => {
         e.preventDefault()
@@ -24,21 +24,12 @@ function App() {
 ``
     const handleRegisterationSubmit = async (e) => {
         e.preventDefault()
-        await createUserWithEmailAndPassword(auth, email, password)
-            .then((userCredential) => {
-                // Signed in
-                const user = userCredential.user;
-                console.log(user)
-            }).catch((error) => {
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                console.log(errorCode, errorMessage)
-            });
+        await register(email, password);
     }
 
     const handleLoginSubmit = async (e) => {
         e.preventDefault();
-        login(email, password)
+        await login(email, password)
     }
 
     return (
