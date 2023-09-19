@@ -4,11 +4,13 @@ import viteLogo from '/vite.svg'
 import './App.css'
 import { auth } from './firebase'
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import {AuthProvider, useAuth} from "./AuthContext.jsx";
 
 function App() {
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [ currentUser, setCurrentUser ] = useAuth();
 
     const handleEmailChange = (e) => {
         e.preventDefault()
@@ -57,7 +59,7 @@ function App() {
                     <img src={reactLogo} className="logo react" alt="React logo"/>
                 </a>
             </div>
-            <h1>Vite + React</h1>
+            <h1>{currentUser.display_name}</h1>
             <form className="card" onSubmit={handleLoginSubmit}>
                 <input type={"email"} value={email} onChange={handleEmailChange} />
                 <input type={"password"} value={password} onChange={handlePasswordChange} />
