@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "dev-all": "concurrently \"npm run dev\" \"cd client/a3-products-client && npm run dev\""
   },
   "author": "",
   "license": "ISC",
