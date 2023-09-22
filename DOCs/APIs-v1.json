@@ -1,0 +1,177 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "A3 Products Internal API",
+    "description": "This is the internal API for A3 Products. It is used to manage the products, users, reviews and other features.",
+    "version": "0.0.1"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8000/api/v1/"
+    }
+  ],
+  "paths": {
+    "/product" : {
+      "get": {
+        "summary": "Get details of the products",
+        "description": "Get and filter the details of the products based on the query parameters such as category and price range.",
+        "parameters": [
+           {
+            "name": "category",
+            "in": "query",
+            "description": "Category of the product",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "prices",
+            "in": "query",
+            "description": "Price range of the product",
+            "schema": {
+              "type": "string",
+              "example": "1000-2000"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Product"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Product": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "ID of the product",
+            "example": "fd4b23kas3fdk65g"
+          },
+          "title": {
+            "type": "string",
+            "description": "Title of the product",
+            "example": "iPhone 12"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the product",
+            "example": "The latest iPhone"
+          },
+          "details": {
+            "type": "string",
+            "description": "Additional details of the product written in Markdown/HTML",
+            "example": "The latest iPhone"
+          },
+          "price": {
+            "type": "object",
+            "description": "Price of the product",
+            "properties": {
+              "amount": {
+                "type": "number",
+                "description": "Amount of the price",
+                "example": 1000
+              },
+              "currency": {
+                "type": "string",
+                "description": "Currency of the price",
+                "example": "USD"
+              }
+            }
+          },
+          "images": {
+            "type": "array",
+            "description": "Array of image of product URLs",
+            "items": {
+              "type": "string",
+              "format": "url",
+              "description": "URL of the image",
+              "example": "https://example.com/image.jpg"
+            }
+          },
+          "category": {
+            "type": "string",
+            "description": "Category of the product",
+            "example": "Electronics"
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "Date of creation of the product",
+            "example": "2021-01-01T00:00:00.000Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "description": "Date of last update of the product",
+            "example": "2021-01-01T00:00:00.000Z"
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "ID of the user"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the user"
+          },
+          "email": {
+            "type": "string",
+            "description": "Email of the user"
+          },
+          "role": {
+            "type": "string",
+            "description": "Role of the user"
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "Date of creation of the user"
+          },
+          "updatedAt": {
+            "type": "string",
+            "description": "Date of last update of the user"
+          }
+        }
+      },
+      "Review": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "rating": {
+            "type": "number"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
