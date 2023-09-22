@@ -1,5 +1,11 @@
-import {useState} from "react";
-import {useAuth} from "../context/AuthContext.jsx";
+import { useState } from "react";
+import { useAuth } from "../context/AuthContext.jsx";
+import Typography from '@mui/material/Typography';
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import { Button, Card, Grid, IconButton, TextField, Toolbar } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 const SignInPage = () => {
 
@@ -21,22 +27,49 @@ const SignInPage = () => {
         await login(email, password)
     }
 
+    const navigate = useNavigate();
+    const goBack = () => {
+        navigate(-1);
+    }
+
     return (
-        <div>
-            <h1>Sign In Page</h1>
-            <h1>{currentUser?.email }</h1>
-            <form className="card" onSubmit={handleLoginSubmit}>
-                <input type={"email"} value={email} onChange={handleEmailChange} />
-                <input type={"password"} value={password} onChange={handlePasswordChange} />
-                <button type={"submit"}>Login</button>
-            </form>{/*
-            <form className="card" onSubmit={handleRegisterationSubmit}>
-                <input type={"email"} value={email} onChange={handleEmailChange} />
-                <input type={"password"} value={password} onChange={handlePasswordChange} />
-                <button type={"submit"}>Register</button>
-            </form>*/}
-            <button onClick={logout}>Logout</button>
-        </div>
+        <>
+            <Box sx={{ flexGrow: 1 }}>
+                <AppBar position="sticky" color="primary">
+                    <Toolbar>
+                        <IconButton aria-label="back" onClick={goBack} edge="start" color="inherit">
+                            <ArrowBackIcon />
+                        </IconButton>
+                        <Typography variant="h6" component="div" fontFamily={"monospace"}>
+                            Login
+                        </Typography>
+                    </Toolbar>
+                </AppBar>
+            </Box>
+            <center>
+                {currentUser && <p>Logged in as: {currentUser.email}</p>}
+                <br /> {currentUser && <Button variant='contained' onClick={logout}>Logout</Button>}
+                <div className="card" style={{ width: "30rem", marginTop: "5rem" }}>
+                    <Card variant="outlined" sx={{ minWidth: 275}}>
+                        <form className="card" onSubmit={handleLoginSubmit}>
+                            <Grid container spacing={2} sx={{mt:2, mb:2}}>
+                                <Grid item xs={12}>
+                                    <TextField type="email" className="form-control" placeholder="Email" onChange={handleEmailChange} />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField type="password" className="form-control" placeholder="Password" onChange={handlePasswordChange} />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <Button variant='contained' type="submit" onChange={handleEmailChange}>Sign In</Button><br />
+                                    <p>New to the site?</p>
+                                    <p>Need to Register? <a href="/register">here</a></p>
+                                </Grid>
+                            </Grid>
+                        </form>
+                    </Card>
+                </div>
+            </center>
+        </>
     )
 }
 

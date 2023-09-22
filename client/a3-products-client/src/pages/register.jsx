@@ -4,7 +4,7 @@ import Axios from 'axios'
 import Typography from '@mui/material/Typography';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
-import {Button, Grid, IconButton, TextField, Toolbar} from "@mui/material";
+import {Button, Card, Grid, IconButton, TextField, Toolbar} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
@@ -56,8 +56,11 @@ const SignUpPage = () => {
                     </Toolbar>
                 </AppBar>
             </Box >
-            <form onSubmit={handleSubmit} >
-                <Grid container direction={"column"} spacing={2} sx={{ m: 2 }}>
+            <center>
+            <div className="card" style={{ width: "30rem", marginTop: "5rem"}}>
+            <Card variant="outlined">
+            <form onSubmit={handleSubmit}>
+                <Grid container direction={"column"} spacing={2} sx={{ mt: 2, mb:2 }}>
                     <Grid item>
                         <TextField type={"text"} label="First Name" required value={firstName} onChange={(e) => setfirstName(e.target.value)} /><br />
                     </Grid>
@@ -71,10 +74,15 @@ const SignUpPage = () => {
                         <TextField type={"password"} label="Password" value={password} onChange={handlePasswordChange} /><br />
                     </Grid>
                     <Grid item>
-                        <Button variant="contained" type={"submit"}>Register</Button>
+                        <Button variant="contained" type={"submit"}>Register</Button><br>
+                        </br>
+                        <p>Already have an account? <a href="/login">Login</a></p>
                     </Grid>
                 </Grid>
             </form>
+            </Card>    
+            </div>
+            </center>
         </>
     )
 
