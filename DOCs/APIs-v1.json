@@ -11,12 +11,21 @@
     }
   ],
   "paths": {
-    "/product" : {
+    "/products" : {
       "get": {
         "summary": "Get details of the products",
         "description": "Get and filter the details of the products based on the query parameters such as category and price range.",
         "parameters": [
-           {
+          {
+            "name": "ids",
+            "in": "query",
+            "description": "IDs of the products",
+            "schema": {
+              "type": "string",
+              "example": "fd4b23kas3fdk65g,fd4b23kas3fdk65g"
+            }
+          },
+          {
             "name": "category",
             "in": "query",
             "description": "Category of the product",
@@ -31,6 +40,22 @@
             "schema": {
               "type": "string",
               "example": "1000-2000"
+            }
+          },
+          {
+            "name": "brand",
+            "in": "query",
+            "description": "Products of that brand",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "tags",
+            "in": "query",
+            "description": "Products with that tag",
+            "schema": {
+              "type": "string"
             }
           }
         ],
@@ -47,6 +72,396 @@
                 }
               }
             }
+          }
+        }
+      },
+      "post" : {
+        "summary": "Create a new product",
+        "description": "Create a new product with the given details.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Product"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Product"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/products/{productId}": {
+      "put": {
+        "summary": "Update a product",
+        "description": "Update the product with the given ID.",
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "path",
+            "description": "ID of the product",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Product"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Product"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+          "summary": "Delete a product",
+          "description": "Delete the product with the given ID.",
+          "parameters": [
+          {
+              "name": "productId",
+              "in": "path",
+              "description": "ID of the product",
+              "schema": {
+              "type": "string"
+              }
+          }
+          ],
+          "responses": {
+          "204": {
+              "description": "No Content"
+          }
+          }
+      }
+    },
+    "/products/{productId}/reviews": {
+      "get": {
+        "summary": "Get reviews of the product",
+        "description": "Get the reviews of the product with the given ID.",
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "path",
+            "description": "ID of the product",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Review"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new review",
+        "description": "Create a new review for the product with the given ID.",
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "path",
+            "description": "ID of the product",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Review"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Review"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/products/{productId}/reviews/{reviewId}": {
+      "get": {
+        "summary": "Get a review",
+        "description": "Get the review with the given ID for the product with the given ID.",
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "path",
+            "description": "ID of the product",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "reviewId",
+            "in": "path",
+            "description": "ID of the review",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Review"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update a review",
+        "description": "Update the review with the given ID for the product with the given ID.",
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "path",
+            "description": "ID of the product",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "reviewId",
+            "in": "path",
+            "description": "ID of the review",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Review"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Review"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a review",
+        "description": "Delete the review with the given ID for the product with the given ID.",
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "path",
+            "description": "ID of the product",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "reviewId",
+            "in": "path",
+            "description": "ID of the review",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        }
+      }
+    },
+    "/stores": {
+      "get": {
+        "summary": "Get details of the stores",
+        "description": "Get and filter the details of the stores based on the query parameters such as category and price range.",
+        "parameters": [
+          {
+            "name": "ids",
+            "in": "query",
+            "description": "IDs of the stores",
+            "schema": {
+              "type": "string",
+              "example": "fd4b23kas3fdk65g,fd4b23kas3fdk65g"
+            }
+          },
+          {
+            "name": "category",
+            "in": "query",
+            "description": "Category of the store",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "brand",
+            "in": "query",
+            "description": "Stores of that brand",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "tags",
+            "in": "query",
+            "description": "Stores with that tag",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Store"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new store",
+        "description": "Create a new store with the given details.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Store"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Store"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stores/{storeId}" : {
+      "put": {
+        "summary": "Update a store",
+        "description": "Update the store with the given ID.",
+        "parameters": [
+          {
+            "name": "storeId",
+            "in": "path",
+            "description": "ID of the store",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Store"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Store"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a store",
+        "description": "Delete the store with the given ID.",
+        "parameters": [
+          {
+            "name": "storeId",
+            "in": "path",
+            "description": "ID of the store",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
           }
         }
       }
@@ -76,6 +491,11 @@
             "type": "string",
             "description": "Additional details of the product written in Markdown/HTML",
             "example": "The latest iPhone"
+          },
+          "stock": {
+            "type": "number",
+            "description": "Stock of the product",
+            "example": 100
           },
           "price": {
             "type": "object",
@@ -107,6 +527,29 @@
             "type": "string",
             "description": "Category of the product",
             "example": "Electronics"
+          },
+          "reviews": {
+              "type": "array",
+              "description": "Array of reviews of the product",
+              "items": {
+                "type": "string",
+                "description": "ID of the review",
+                "example": "fd4b23kas3fdk65g"
+              }
+          },
+          "brands" : {
+            "type": "string",
+            "description": "Brand of the product",
+            "example": "Apple"
+          },
+          "tags": {
+            "type": "array",
+            "description": "Array of tags of the product",
+            "items": {
+              "type": "string",
+              "description": "Tag of the product",
+              "example": "iPhone"
+            }
           },
           "createdAt": {
             "type": "string",
@@ -258,6 +701,72 @@
             "updatedAt": {
                 "type": "string"
             }
+        }
+      },
+      "Store": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the store",
+            "example": "A3 Products"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the store",
+            "example": "The best store for all your needs"
+          },
+          "contact" : {
+            "type": "object",
+            "description": "Contact details of the store",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Name of the store",
+                "example": "A3 Products"
+              },
+              "gst": {
+                "type": "string",
+                "description": "GST number of the store",
+                "example": "GST1234567890"
+              },
+              "email": {
+                "type": "string",
+                "description": "Email of the store",
+                "format": "email"
+              },
+              "phone": {
+                "type": "array",
+                "description": "Array of phone numbers of the store",
+                "items": {
+                  "type": "string",
+                  "description": "Phone number of the store",
+                  "example": "+91 1234567890"
+                }
+              }
+            }
+          },
+          "logo": {
+            "type": "string",
+            "description": "URL of the logo of the store",
+            "format": "url",
+            "example": "https://example.com/image.jpg"
+          },
+          "banner": {
+            "type": "string",
+            "description": "URL of the banner of the store",
+            "format": "url",
+            "example": "https://example.com/image.jpg"
+          },
+          "products" : {
+            "type": "array",
+            "description": "Array of product ids of the store",
+            "items": {
+              "type": "string",
+              "description": "ID of the product",
+              "example": "fd4b23kas3fdk65g"
+            }
+          }
         }
       }
     }
