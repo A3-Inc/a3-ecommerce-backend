@@ -1,4 +1,4 @@
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import { useAuth } from "../context/AuthContext.jsx";
 import Typography from '@mui/material/Typography';
 import AppBar from '@mui/material/AppBar';
@@ -11,7 +11,7 @@ const SignInPage = () => {
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    const { currentUser, logout, login } = useAuth()
+    const { currentUser, logout, login, loading } = useAuth()
     const handleEmailChange = (e) => {
         e.preventDefault()
         setEmail(e.target.value)
@@ -31,6 +31,12 @@ const SignInPage = () => {
     const goBack = () => {
         navigate(-1);
     }
+
+    useEffect(() => {
+        if (currentUser) {
+            navigate('/')
+        }
+    }, [currentUser, navigate])
 
     return (
         <>

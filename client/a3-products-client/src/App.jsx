@@ -18,6 +18,7 @@ import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
 import { Card } from '@mui/material';
 import Axios from 'axios';
+import {useAuth} from "./context/AuthContext.jsx";
 
 const drawerWidth = 240;
 const navItems = ['Login', 'Register'];
@@ -29,6 +30,7 @@ const items = {
 
 function DrawerAppBar(props) {
   const { window } = props;
+  const { currentUser, logout } = useAuth()
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [electronics, setElectronics] = useState([]);
   const URL = "http://localhost:8000/api/v1";
@@ -54,12 +56,17 @@ function DrawerAppBar(props) {
       </Typography>
       <Divider />
       <List>
-        {navItems.map((item) => (
-          <Link to={items[item]} key={item}>
-            <Button fontFamily={"monospace"} color='inherit'>{item}</Button>
-          </Link>
-
-        ))}
+          { currentUser ? <ListItemButton onClick={logout}>
+              <ListItemText primary="Logout" />
+            </ListItemButton> : navItems.map(
+              (item) => {
+                  return <Link to={items[item]} key={item}>
+                      <ListItemButton>
+                          <ListItemText primary={item} />
+                      </ListItemButton>
+                  </Link>
+              }
+          ) }
       </List>
     </Box>
   );
@@ -68,9 +75,8 @@ function DrawerAppBar(props) {
 
   return (
     <Box sx={{ display: 'flex' }}>
-      <CssBaseline />
       <AppBar component="nav">
-        <Toolbar>
+        <Toolbar  >
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -89,11 +95,17 @@ function DrawerAppBar(props) {
             A3-Products
           </Typography>
           <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-            {navItems.map((item) => (
-              <Link to={items[item]} key={item}>
-                <Button fontFamily={"monospace"} sx={{ color: '#fff' }}>{item}</Button>
-              </Link>
-            ))}
+              { currentUser ? <ListItemButton onClick={logout}>
+                  <ListItemText primary="Logout" />
+              </ListItemButton> : navItems.map(
+                  (item) => {
+                      return (
+                          <Link to={items[item]} key={item}>
+                              <Button fontFamily={"monospace"} sx={{ color: '#fff' }}>{item}</Button>
+                          </Link>
+                      );
+                  }
+              ) }
           </Box>
         </Toolbar>
       </AppBar>
@@ -114,22 +126,25 @@ function DrawerAppBar(props) {
           {drawer}
         </Drawer>
       </nav>
-      <Box component="main" sx={{ p: 3 }}>
-        <Toolbar />
+      <Box component="main">
 
-
-
+                <Toolbar />
+              {electronics.map((item) => {
+                     return  <div className="ele" key={item._id}>
+                          <h1>{item.title}</h1>
+                          <h2>{item.price.amount}</h2>
+                          <h3>{item.description}</h3>
+                         <img
+                             src={item.images[0]}
+                             alt={item.title}
+                             loading="lazy"
+                             width={100}
+                         />
+                      </div>
+                  }
+              )}
       </Box>
-      <div className="products">
-        {electronics.map((item) => {
-          <div className="ele" key={item._id}>
-            <h1>{item.title}</h1>
-            <h2>{item.price}</h2>
-            <h3>{item.description}</h3>
-          </div>
-        }
-        )}
-      </div>
+
 
     </Box>
 

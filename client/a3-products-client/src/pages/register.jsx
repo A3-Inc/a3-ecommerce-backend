@@ -1,4 +1,4 @@
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import { useAuth } from "../context/AuthContext.jsx";
 import Axios from 'axios'
 import Typography from '@mui/material/Typography';
@@ -41,6 +41,12 @@ const SignUpPage = () => {
 
         await register(email, password)
     }
+
+    useEffect(() => {
+        if (currentUser) {
+            navigate('/')
+        }
+    }, [currentUser, navigate])
 
     return (
         <>
