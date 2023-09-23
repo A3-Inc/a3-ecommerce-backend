@@ -746,6 +746,12 @@
               }
             }
           },
+          "website" : {
+            "type": "string",
+            "description": "URL of the website of the store",
+            "format": "url",
+            "example": "https://example.com"
+          },
           "logo": {
             "type": "string",
             "description": "URL of the logo of the store",
