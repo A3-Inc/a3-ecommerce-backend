@@ -23,7 +23,7 @@ router.post("/register", async (req, resp) => {
 
 router.get("/products", async (req, resp) => {
     try {
-        const products = await Product.find();
+        const products = await Product.find({ category: req.query.category });
         if (products) {
             resp.send(products);
         } else {

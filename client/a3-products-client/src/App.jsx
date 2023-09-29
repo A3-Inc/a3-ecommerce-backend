@@ -18,7 +18,7 @@ import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
 import { Card } from '@mui/material';
 import Axios from 'axios';
-import {useAuth} from "./context/AuthContext.jsx";
+import { useAuth } from "./context/AuthContext.jsx";
 
 const drawerWidth = 240;
 const navItems = ['Login', 'Register'];
@@ -32,8 +32,13 @@ function DrawerAppBar(props) {
   const { window } = props;
   const { currentUser, logout } = useAuth()
   const [mobileOpen, setMobileOpen] = React.useState(false);
-  const [electronics, setElectronics] = useState([]);
+  const [products, setProducts] = useState([]);
+  const [electronicsFiltered, setElectronicsFilteredProducts] = useState([]);
   const URL = "http://localhost:8000/api/v1";
+
+  const filterDataByCategory = (category) => {
+    return products.filter(item => item.category === category);
+  };
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
@@ -43,9 +48,11 @@ function DrawerAppBar(props) {
     Axios.get(URL + "/products").then(res => {
       console.log(res)
       return res.data;
-    }).then(data => {
-      console.log(data);
-      setElectronics(data);
+    }).then(async data => {
+      setProducts(data);
+      const electronicsFiltered = filterDataByCategory("Electronics");
+      await setElectronicsFilteredProducts(electronicsFiltered);
+      console.log(electronicsFiltered);
     })
   }, []);
 
@@ -56,17 +63,17 @@ function DrawerAppBar(props) {
       </Typography>
       <Divider />
       <List>
-          { currentUser ? <ListItemButton onClick={logout}>
-              <ListItemText primary="Logout" />
-            </ListItemButton> : navItems.map(
-              (item) => {
-                  return <Link to={items[item]} key={item}>
-                      <ListItemButton>
-                          <ListItemText primary={item} />
-                      </ListItemButton>
-                  </Link>
-              }
-          ) }
+        {currentUser ? <ListItemButton onClick={logout}>
+          <ListItemText primary="Logout" />
+        </ListItemButton> : navItems.map(
+          (item) => {
+            return <Link to={items[item]} key={item}>
+              <ListItemButton>
+                <ListItemText primary={item} />
+              </ListItemButton>
+            </Link>
+          }
+        )}
       </List>
     </Box>
   );
@@ -95,17 +102,17 @@ function DrawerAppBar(props) {
             A3-Products
           </Typography>
           <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-              { currentUser ? <ListItemButton onClick={logout}>
-                  <ListItemText primary="Logout" />
-              </ListItemButton> : navItems.map(
-                  (item) => {
-                      return (
-                          <Link to={items[item]} key={item}>
-                              <Button fontFamily={"monospace"} sx={{ color: '#fff' }}>{item}</Button>
-                          </Link>
-                      );
-                  }
-              ) }
+            {currentUser ? <ListItemButton onClick={logout}>
+              <ListItemText primary="Logout" />
+            </ListItemButton> : navItems.map(
+              (item) => {
+                return (
+                  <Link to={items[item]} key={item}>
+                    <Button fontFamily={"monospace"} sx={{ color: '#fff' }}>{item}</Button>
+                  </Link>
+                );
+              }
+            )}
           </Box>
         </Toolbar>
       </AppBar>
@@ -128,21 +135,23 @@ function DrawerAppBar(props) {
       </nav>
       <Box component="main">
 
-                <Toolbar />
-              {electronics.map((item) => {
-                     return  <div className="ele" key={item._id}>
-                          <h1>{item.title}</h1>
-                          <h2>{item.price.amount}</h2>
-                          <h3>{item.description}</h3>
-                         <img
-                             src={item.images[0]}
-                             alt={item.title}
-                             loading="lazy"
-                             width={100}
-                         />
-                      </div>
-                  }
-              )}
+        <Toolbar />
+
+        {electronicsFiltered.map((item) => {
+
+          return <div className="ele" key={item._id}>
+            <h1>{item.title}</h1>
+            <h2>{item.price.amount}</h2>
+            <h3>{item.description}</h3>
+            <img
+              src={item.images[0]}
+              alt={item.title}
+              loading="lazy"
+              width={100}
+            />
+          </div>
+        }
+        )}
       </Box>
 
 
