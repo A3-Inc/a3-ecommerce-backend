@@ -1,24 +1,21 @@
 import * as React from 'react';
-import { useState, useEffect } from 'react';
+import {useState} from 'react';
 import PropTypes from 'prop-types';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
-import CssBaseline from '@mui/material/CssBaseline';
 import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import { Link } from 'react-router-dom';
-import { Card } from '@mui/material';
-import Axios from 'axios';
-import { useAuth } from "./context/AuthContext.jsx";
+import {Link} from 'react-router-dom';
+import {useAuth} from "./context/AuthContext.jsx";
+import ProductByCategory from "./components/product-by-category.jsx";
 
 const drawerWidth = 240;
 const navItems = ['Login', 'Register'];
@@ -33,28 +30,12 @@ function DrawerAppBar(props) {
   const { currentUser, logout } = useAuth()
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [products, setProducts] = useState([]);
-  const [electronicsFiltered, setElectronicsFilteredProducts] = useState([]);
-  const URL = "http://localhost:8000/api/v1";
 
-  const filterDataByCategory = (category) => {
-    return products.filter(item => item.category === category);
-  };
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
   };
 
-  useEffect(() => {
-    Axios.get(URL + "/products").then(res => {
-      console.log(res)
-      return res.data;
-    }).then(async data => {
-      setProducts(data);
-      const electronicsFiltered = filterDataByCategory("Electronics");
-      await setElectronicsFilteredProducts(electronicsFiltered);
-      console.log(electronicsFiltered);
-    })
-  }, []);
 
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
@@ -137,21 +118,8 @@ function DrawerAppBar(props) {
 
         <Toolbar />
 
-        {electronicsFiltered.map((item) => {
-
-          return <div className="ele" key={item._id}>
-            <h1>{item.title}</h1>
-            <h2>{item.price.amount}</h2>
-            <h3>{item.description}</h3>
-            <img
-              src={item.images[0]}
-              alt={item.title}
-              loading="lazy"
-              width={100}
-            />
-          </div>
-        }
-        )}
+        <ProductByCategory category="Electronics" />
+        <ProductByCategory category="Kitchen" />
       </Box>
 
 

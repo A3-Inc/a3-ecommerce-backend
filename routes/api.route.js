@@ -23,13 +23,28 @@ router.post("/register", async (req, resp) => {
 
 router.get("/products", async (req, resp) => {
     try {
-        const products = await Product.find({ category: req.query.category });
+        let query = {};
+        if (req.query.category) {
+            query.category = req.query.category;
+        }
+        if (req.query.brand) {
+            query.brands = req.query.brand;
+        }
+        if (req.query.price) {
+            // In the query string, the price is in the format of 0-100
+            // we need to convert it to an array of [0, 100]
+            const priceRange = req.query.price.split("-");
+            query["price.amount"] = { $gte: priceRange[0], $lte: priceRange[1] };
+        }
+
+        const products = await Product.find(query);
         if (products) {
             resp.send(products);
         } else {
             console.log("No products found");
         }
     } catch (e) {
+        console.log(e);
         resp.send("Something went wrong");
     }
 });
