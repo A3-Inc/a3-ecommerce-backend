@@ -53,15 +53,14 @@ const ProductByCategory = ({ category, sx }) => {
                                                 maximumFractionDigits: 2,
                                                 style: 'currency',
                                                 currency: item.price.currency,
-                                            })
-
-                                            }</Typography>
-                                            <CardMedia>
+                                            })}
+                                            </Typography>
+                                            <CardMedia >
                                                 <img
                                                     src={item.images[0]}
                                                     alt={item.title}
                                                     loading="lazy"
-                                                    width={100}
+                                                    height={200}
                                                 />
                                             </CardMedia>
                                         </Box>
