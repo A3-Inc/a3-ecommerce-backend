@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {useState} from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -13,9 +13,13 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import {Link} from 'react-router-dom';
-import {useAuth} from "./context/AuthContext.jsx";
+import { Link } from 'react-router-dom';
+import { useAuth } from "./context/AuthContext.jsx";
 import ProductByCategory from "./components/product-by-category.jsx";
+import AspectRatio from '@mui/joy/AspectRatio';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/joy/CardContent';
+import CardOverflow from '@mui/joy/CardOverflow';
 
 const drawerWidth = 240;
 const navItems = ['Login', 'Register'];
@@ -118,9 +122,15 @@ function DrawerAppBar(props) {
 
         <Toolbar />
 
+
         <ProductByCategory category="Electronics" />
         <ProductByCategory category="Kitchen" />
+
       </Box>
+
+
+
+
 
 
     </Box>
