@@ -20,6 +20,7 @@ import AspectRatio from '@mui/joy/AspectRatio';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/joy/CardContent';
 import CardOverflow from '@mui/joy/CardOverflow';
+import {Container} from "@mui/material";
 
 const drawerWidth = 240;
 const navItems = ['Login', 'Register'];
@@ -118,15 +119,11 @@ function DrawerAppBar(props) {
           {drawer}
         </Drawer>
       </nav>
-      <Box component="main">
-
+      <Container component="main" >
         <Toolbar />
-
-
-        <ProductByCategory category="Electronics" />
-        <ProductByCategory category="Kitchen" />
-
-      </Box>
+        <ProductByCategory category="Electronics" sx={{ mt: 2}} />
+        <ProductByCategory category="Kitchen" sx={{ mt: 2}} />
+      </Container>
 
 
 

@@ -5,8 +5,10 @@ import { useEffect } from "react";
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
-import { Grid } from "@mui/material";
-const ProductByCategory = ({ category }) => {
+import {Container, Grid} from "@mui/material";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+const ProductByCategory = ({ category, sx }) => {
 
     const filterDataByCategory = async (category) => {
         const res = await Axios.get(SERVER_BASE_URL + `/products?category=${category}`);
@@ -35,18 +37,25 @@ const ProductByCategory = ({ category }) => {
     const groupedItems = Object.entries(itemsByCategory);
 
     return (
-        <div>
+        <Container sx={sx}>
             {groupedItems.map(([category, items]) => (
-                <div className="ele" key={category}>
-                    <Card sx={{ maxWidth: 345 }} variant="outlined">
+                <div key={category}>
+                    <Card  variant="outlined">
                         <CardContent>
                             <h1>{category}</h1>
                             <Grid container direction={"row"} spacing={2}>
                                 {items.map((item) => (
-                                    <Grid item key={item._id} direction={"row"}>
-                                        <div>
-                                            <h2>{item.title}</h2>
-                                            <h3>{item.price.amount}</h3>
+                                    <Grid item xs key={item._id}>
+                                        <Box >
+                                            <Typography component={"h1"} variant={"h4"} >{item.title}</Typography>
+                                            <Typography component={"p"} variant={"subtitle1"}>{
+                                                item.price.amount.toLocaleString('en-IN', {
+                                                maximumFractionDigits: 2,
+                                                style: 'currency',
+                                                currency: item.price.currency,
+                                            })
+
+                                            }</Typography>
                                             <CardMedia>
                                                 <img
                                                     src={item.images[0]}
@@ -55,7 +64,7 @@ const ProductByCategory = ({ category }) => {
                                                     width={100}
                                                 />
                                             </CardMedia>
-                                        </div>
+                                        </Box>
                                     </Grid>
                                 ))}
                             </Grid>
@@ -64,7 +73,7 @@ const ProductByCategory = ({ category }) => {
                 </div>
             ))
             }
-        </div>
+        </Container>
     );
 }
 
